@@ -27,14 +27,19 @@ func nameHandler(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
+	if len(params["count"]) < 1 {
+		apistuff.HttpError(w, "Bad count parameter", 400)
+		return
+	}
+
 	if len(params["seed"]) < 1 {
 		apistuff.HttpError(w, "Bad seed parameter", 400)
 		return
 	}
 
 	count, err := strconv.Atoi(params["count"])
-	if err != nil {
-		apistuff.HttpError(w, "Bad count parameter", 400)
+	if err != nil || count > 100000 {
+		apistuff.HttpError(w, "Bad count parameter. Seriously, you don't need that many.", 400)
 		return
 	}
 
@@ -60,7 +65,6 @@ func loggingMiddleware(next http.Handler) http.Handler {
 }
 
 func main() {
-
 	var config Config
 	err := envconfig.Process("", &config)
 	if err != nil {
