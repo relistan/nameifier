@@ -1,0 +1,61 @@
+<html>
+  <head>
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro|Staatliches" rel="stylesheet"> 
+    <link rel="shortcut icon" href="/nameifier/" />
+
+    <style>
+      h1,h2 {
+        font-family: 'Staatliches', cursive;
+      }
+      h3 {
+        font-family: 'Source Sans Pro', sans-serif;
+        font-weight: bold;
+        font-size: large;
+      }
+      body {
+        font-family: 'Source Sans Pro', sans-serif;
+        width: 50%;
+        text-align: center;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      .important {
+        font-size: x-large;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1>Nameifier</h1>
+    <h2>Because naming things is hard</h2>
+
+    <p> Nameifier is a tool for generating consistent, stable sets of names,
+    using only a seed string and a counter. It's nice for making lists of
+    hostnames or other data where a name is easier to remember than a number.
+    </p>
+
+    <p> You simply hit the endpoint and you will get text blob returned that
+    contains the list of names. Samples follow </p>
+    <br> <br>
+
+    <p class="important">
+      <h3>URL Format</h3><pre>/nameifier/&lt;seed string&gt;/&lt;count&gt;/</pre>
+    </p>
+
+    <h3>Generate a Hostname for an AWS Instance</h3>
+    <a href="http://nameifier.cfapps.io/nameifier/i-12deadbeef345/1">
+      http://nameifier.cfapps.io/nameifier/i-12deadbeef345/1
+    </a>
+
+    <h3>Generate 100 Hostnames for a Cluster</h3>
+    <a href="http://nameifier.cfapps.io/nameifier/my-host-cluster/100">
+      http://nameifier.cfapps.io/nameifier/my-host-cluster/100
+    </a>
+
+    <h3>Generate 1000 Names for Objects</h3>
+    <a href="http://nameifier.cfapps.io/nameifier/random_objects/1000">
+      http://nameifier.cfapps.io/nameifier/random_objects/1000
+    </a>
+
+  </body>
+</html>
