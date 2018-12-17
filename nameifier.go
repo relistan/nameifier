@@ -33,12 +33,12 @@ func loadJson(filename string, nameifier *Nameifier) {
 
 	raw, err := ioutil.ReadAll(file)
 	if err != nil {
-		log.Errorf("Can't read the nouns file! (%s) %s", filename, err.Error())
+		log.Errorf("Can't read the nouns file! (%s) %s", filename, err)
 	}
 
 	err = json.Unmarshal(raw, &nameifier)
 	if err != nil {
-		log.Errorf("Eror parsing json from the nouns file '%s': %s", filename, err.Error())
+		log.Errorf("Eror parsing json from the nouns file '%s': %s", filename, err)
 	}
 }
 
