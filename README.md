@@ -8,7 +8,7 @@ data where a name is easier to remember than a number.
 You simply hit the endpoint and you will get text blob returned that contains
 the list of names. Samples follow
 
-This is available, publicly-hosted at: https://nameifier.cfapps.io
+This is available, publicly-hosted at: https://nameifier.herokuapp.com
 
 ## URL Format
 
@@ -18,12 +18,12 @@ This is available, publicly-hosted at: https://nameifier.cfapps.io
 
 ## Generate a Hostname for an AWS Instance
 
-http://nameifier.cfapps.io/nameifier/i-12deadbeef345/1
+http://nameifier.herokuapp.com/nameifier/i-12deadbeef345/1
 
 ## Generate 100 Hostnames for a Cluster
 
-http://nameifier.cfapps.io/nameifier/my-host-cluster/100
+http://nameifier.herokuapp.com/nameifier/my-host-cluster/100
 
 ## Generate 1000 Names for Objects
 
-http://nameifier.cfapps.io/nameifier/random_objects/1000 
+http://nameifier.herokuapp.com/nameifier/random_objects/1000 
