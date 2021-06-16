@@ -5,10 +5,10 @@ before:
 builds:
   - env:
     - CGO_ENABLED=0
-  - goos:
+    goos:
     - linux
     - darwin
-  - goarch:
+    goarch:
     - amd64
 
 archives:
@@ -20,7 +20,6 @@ archives:
     files:
       - LICENSE
       - README.md
-      - nameifier
       - ui
 
 checksum:
