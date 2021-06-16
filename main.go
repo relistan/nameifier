@@ -20,7 +20,7 @@ type Config struct {
 
 func nameHandler(w http.ResponseWriter, req *http.Request) {
 	params := mux.Vars(req)
-	namer := NewNameifier(".")
+	namer := NewNameifier()
 
 	if len(params["count"]) < 1 {
 		apistuff.HttpError(w, "Bad count parameter", 400)

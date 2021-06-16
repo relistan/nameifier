@@ -8,11 +8,6 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-const (
-	NounsFilename  = "data/nouns.json"
-	AdjectivesFile = "data/adjectives.json"
-)
-
 //go:embed data/nouns.json
 var nouns []byte
 //go:embed data/adjectives.json
@@ -38,13 +33,10 @@ func loadJson(file []byte, nameifier *Nameifier) {
 type Nameifier struct {
 	Nouns      []string
 	Adjectives []string
-	BasePath   string
 }
 
-func NewNameifier(basePath string) *Nameifier {
-	n := &Nameifier{
-		BasePath: basePath,
-	}
+func NewNameifier() *Nameifier {
+	n := &Nameifier{}
 	loadJson(nouns, n)
 	loadJson(adjectives, n)
 	return n
