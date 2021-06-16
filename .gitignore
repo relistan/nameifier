@@ -2,3 +2,4 @@
 *.swo
 nameifier
 vendor/
+dist/
