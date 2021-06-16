@@ -3,7 +3,7 @@ applications:
  - name: nameifier
    command: ./nameifier
    env:
-     GOVERSION: go1.15
+     GOVERSION: go1.16
      GOPACKAGENAME: github.com/relistan/nameifier
    memory: 64M
    port: 9001

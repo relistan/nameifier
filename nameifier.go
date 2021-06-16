@@ -3,16 +3,15 @@ package main
 import (
 	"encoding/json"
 	"hash/fnv"
-	"io/ioutil"
-	"os"
+	_ "embed"
 
 	log "github.com/sirupsen/logrus"
 )
 
-const (
-	NounsFilename  = "data/nouns.json"
-	AdjectivesFile = "data/adjectives.json"
-)
+//go:embed data/nouns.json
+var nouns []byte
+//go:embed data/adjectives.json
+var adjectives []byte
 
 type NameGenerator interface {
 	Nameify(seed string) (string, error)
@@ -24,36 +23,22 @@ func hash(s string, max int) uint32 {
 	return h.Sum32() % uint32(max)
 }
 
-func loadJson(filename string, nameifier *Nameifier) {
-	file, err := os.Open(filename)
+func loadJson(file []byte, nameifier *Nameifier) {
+        err := json.Unmarshal(file, &nameifier)
 	if err != nil {
-		log.Error(err.Error())
-		return
-	}
-
-	raw, err := ioutil.ReadAll(file)
-	if err != nil {
-		log.Errorf("Can't read the nouns file! (%s) %s", filename, err)
-	}
-
-	err = json.Unmarshal(raw, &nameifier)
-	if err != nil {
-		log.Errorf("Eror parsing json from the nouns file '%s': %s", filename, err)
+		log.Errorf("Eror parsing json from file: %s", err)
 	}
 }
 
 type Nameifier struct {
 	Nouns      []string
 	Adjectives []string
-	BasePath   string
 }
 
-func NewNameifier(basePath string) *Nameifier {
-	n := &Nameifier{
-		BasePath: basePath,
-	}
-	loadJson(n.BasePath+"/"+NounsFilename, n)
-	loadJson(n.BasePath+"/"+AdjectivesFile, n)
+func NewNameifier() *Nameifier {
+	n := &Nameifier{}
+	loadJson(nouns, n)
+	loadJson(adjectives, n)
 	return n
 }
 
