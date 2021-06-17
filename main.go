@@ -6,6 +6,8 @@ import (
 	"os"
 	"strconv"
 	"strings"
+	"embed"
+	"io/fs"
 
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
@@ -17,6 +19,9 @@ import (
 type Config struct {
 	Port int `envconfig:"PORT" default:"9001"`
 }
+
+//go:embed ui/index.html
+var uiFS embed.FS
 
 func nameHandler(w http.ResponseWriter, req *http.Request) {
 	params := mux.Vars(req)
@@ -73,7 +78,13 @@ func main() {
 	}
 	rubberneck.Print(config)
 
-	uiFs := http.FileServer(http.Dir("ui"))
+	serverRoot, err := fs.Sub(uiFS, "ui")
+	if err != nil {
+		println("Unable to read ui filesystem ", err.Error())
+		os.Exit(1)
+	}
+
+	uiFs := http.FileServer(http.FS(serverRoot))
 	router := mux.NewRouter()
 	router.Use(loggingMiddleware)
 
