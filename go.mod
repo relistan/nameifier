@@ -2,6 +2,8 @@ module github.com/relistan/nameifier
 
 go 1.16
 
+// +heroku goVersion 1.16
+
 require (
 	github.com/gopherjs/gopherjs v0.0.0-20181103185306-d547d1d9531e // indirect
 	github.com/gorilla/context v1.1.1 // indirect
