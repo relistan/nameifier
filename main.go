@@ -9,15 +9,17 @@ import (
 	"embed"
 	"io/fs"
 
+	"github.com/alecthomas/kong"
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
-	"github.com/kelseyhightower/envconfig"
 	"github.com/relistan/apistuff"
 	"gopkg.in/relistan/rubberneck.v1"
 )
 
-type Config struct {
-	Port int `envconfig:"PORT" default:"9001"`
+var Config struct {
+	Port       int    `short:"p" help:"Port to start service on" default:"9001" env:"PORT"`
+	SeedString string `short:"s" help:"Seed string to use for naming" default:"" env:"SEED_STRING"`
+	Count      int    `short:"c" help:"Count of unique names to return" default:1 env:"COUNT"`
 }
 
 //go:embed ui/index.html
@@ -70,30 +72,38 @@ func loggingMiddleware(next http.Handler) http.Handler {
 }
 
 func main() {
-	var config Config
-	err := envconfig.Process("", &config)
-	if err != nil {
-		println("Unable to parse config " + err.Error())
-		os.Exit(1)
+	kong.Parse(&Config)
+
+	// By default start server
+	if Config.SeedString == "" {
+		rubberneck.Print(Config)
+		serverRoot, err := fs.Sub(uiFS, "ui")
+		if err != nil {
+			println("Unable to read ui filesystem ", err.Error())
+			os.Exit(1)
+		}
+
+		uiFs := http.FileServer(http.FS(serverRoot))
+		router := mux.NewRouter()
+		router.Use(loggingMiddleware)
+		router.HandleFunc("/nameifier/{seed}/{count}", nameHandler).Methods("GET")
+		router.HandleFunc("/nameifier/{seed}", blankHandler).Methods("GET")
+		router.HandleFunc("/nameifier/", blankHandler).Methods("GET")
+		router.HandleFunc("/nameifier/", blankHandler).Methods("GET")
+		router.PathPrefix("/").Handler(uiFs)
+		http.Handle("/", router)
+		http.ListenAndServe(fmt.Sprintf("0.0.0.0:%d", Config.Port), nil)
+	} else {
+		var allNames []string
+		namer := NewNameifier()
+		for i := 0; i < Config.Count; i++ {
+			name, err := namer.Nameify(fmt.Sprintf("%s-%d", Config.SeedString, i))
+			if err != nil {
+				fmt.Printf("Failed to nameify! %s", err)
+				return
+			}
+			allNames = append(allNames, name)
+		}
+		fmt.Println(strings.Join(allNames, "\n"))
 	}
-	rubberneck.Print(config)
-
-	serverRoot, err := fs.Sub(uiFS, "ui")
-	if err != nil {
-		println("Unable to read ui filesystem ", err.Error())
-		os.Exit(1)
-	}
-
-	uiFs := http.FileServer(http.FS(serverRoot))
-	router := mux.NewRouter()
-	router.Use(loggingMiddleware)
-
-	router.HandleFunc("/nameifier/{seed}/{count}", nameHandler).Methods("GET")
-	router.HandleFunc("/nameifier/{seed}", blankHandler).Methods("GET")
-	router.HandleFunc("/nameifier/", blankHandler).Methods("GET")
-	router.HandleFunc("/nameifier/", blankHandler).Methods("GET")
-	router.PathPrefix("/").Handler(uiFs)
-
-	http.Handle("/", router)
-	http.ListenAndServe(fmt.Sprintf("0.0.0.0:%d", config.Port), nil)
 }

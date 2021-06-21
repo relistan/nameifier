@@ -1,15 +1,16 @@
 package main
 
 import (
+	_ "embed"
 	"encoding/json"
 	"hash/fnv"
-	_ "embed"
 
 	log "github.com/sirupsen/logrus"
 )
 
 //go:embed data/nouns.json
 var nouns []byte
+
 //go:embed data/adjectives.json
 var adjectives []byte
 
@@ -24,7 +25,7 @@ func hash(s string, max int) uint32 {
 }
 
 func loadJson(file []byte, nameifier *Nameifier) {
-        err := json.Unmarshal(file, &nameifier)
+	err := json.Unmarshal(file, &nameifier)
 	if err != nil {
 		log.Errorf("Eror parsing json from file: %s", err)
 	}
