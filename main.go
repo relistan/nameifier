@@ -1,13 +1,13 @@
 package main
 
 import (
+	"embed"
 	"fmt"
+	"io/fs"
 	"net/http"
 	"os"
 	"strconv"
 	"strings"
-	"embed"
-	"io/fs"
 
 	"github.com/alecthomas/kong"
 	"github.com/gorilla/handlers"
