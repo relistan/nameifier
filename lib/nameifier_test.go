@@ -1,4 +1,4 @@
-package main
+package lib
 
 import (
 	"testing"
@@ -8,7 +8,7 @@ import (
 
 func Test_Nameifier(t *testing.T) {
 	Convey("When naming things", t, func() {
-		nameifier := NewNameifier(".")
+		nameifier := NewNameifier()
 
 		Convey("it returns a properly formatted string", func() {
 			result, _ := nameifier.Nameify("chaucer")
