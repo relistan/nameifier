@@ -4,8 +4,6 @@ import (
 	_ "embed"
 	"encoding/json"
 	"hash/fnv"
-
-	log "github.com/sirupsen/logrus"
 )
 
 //go:embed data/nouns.json
@@ -24,11 +22,12 @@ func hash(s string, max int) uint32 {
 	return h.Sum32() % uint32(max)
 }
 
-func loadJson(file []byte, nameifier *Nameifier) {
+func loadJson(file []byte, nameifier *Nameifier) error {
 	err := json.Unmarshal(file, &nameifier)
 	if err != nil {
-		log.Errorf("Eror parsing json from file: %s", err)
+		return err
 	}
+	return nil
 }
 
 type Nameifier struct {
@@ -36,11 +35,17 @@ type Nameifier struct {
 	Adjectives []string
 }
 
-func NewNameifier() *Nameifier {
+func NewNameifier() (*Nameifier, error) {
 	n := &Nameifier{}
-	loadJson(nouns, n)
-	loadJson(adjectives, n)
-	return n
+	err := loadJson(nouns, n)
+	if err != nil {
+		return n, err
+	}
+	err = loadJson(adjectives, n)
+	if err != nil {
+		return n, err
+	}
+	return n, nil
 }
 
 func (n *Nameifier) Nameify(seed string) (string, error) {

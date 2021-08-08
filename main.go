@@ -65,7 +65,10 @@ func loggingMiddleware(next http.Handler) http.Handler {
 
 func generateNames(count int, seed string) ([]string, error) {
 	var allNames []string
-	namer := lib.NewNameifier()
+	namer, err := lib.NewNameifier()
+	if err != nil {
+		return nil, err
+	}
 	for i := 0; i < count; i++ {
 		name, err := namer.Nameify(fmt.Sprintf("%s-%d", seed, i))
 		if err != nil {
