@@ -65,7 +65,8 @@ func loggingMiddleware(next http.Handler) http.Handler {
 
 func generateNames(count int, seed string) ([]string, error) {
 	var allNames []string
-	namer, err := nameify.NewNameifier()
+	namer := nameify.NewNameifier()
+	err := namer.LoadJsonFiles()
 	if err != nil {
 		return nil, err
 	}

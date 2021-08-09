@@ -36,17 +36,21 @@ type Nameifier struct {
 	Adjectives []string
 }
 
-func NewNameifier() (*Nameifier, error) {
+func NewNameifier() (*Nameifier) {
 	n := &Nameifier{}
+	return n
+}
+
+func (n *Nameifier) LoadJsonFiles() error {
 	err := loadJson(nouns, n)
 	if err != nil {
-		return n, err
+		return err
 	}
 	err = loadJson(adjectives, n)
 	if err != nil {
-		return n, err
+		return err
 	}
-	return n, nil
+	return nil
 }
 
 func (n *Nameifier) Nameify(seed string) (string, error) {
