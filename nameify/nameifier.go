@@ -3,8 +3,8 @@ package nameify
 import (
 	_ "embed"
 	"encoding/json"
-	"hash/fnv"
 	"fmt"
+	"hash/fnv"
 )
 
 //go:embed data/nouns.json
@@ -36,7 +36,7 @@ type Nameifier struct {
 	Adjectives []string
 }
 
-func NewNameifier() (*Nameifier) {
+func NewNameifier() *Nameifier {
 	n := &Nameifier{}
 	return n
 }
