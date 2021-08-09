@@ -4,6 +4,7 @@ import (
 	_ "embed"
 	"encoding/json"
 	"hash/fnv"
+	"fmt"
 )
 
 //go:embed data/nouns.json
@@ -25,7 +26,7 @@ func hash(s string, max int) uint32 {
 func loadJson(file []byte, nameifier *Nameifier) error {
 	err := json.Unmarshal(file, &nameifier)
 	if err != nil {
-		return err
+		return fmt.Errorf("Eror parsing json from file: %s", err)
 	}
 	return nil
 }
