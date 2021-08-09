@@ -14,7 +14,7 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/relistan/apistuff"
 	"gopkg.in/relistan/rubberneck.v1"
-	"github.com/relistan/nameifier/lib"
+	"github.com/relistan/nameifier/nameify"
 )
 
 var Config struct {
@@ -65,7 +65,7 @@ func loggingMiddleware(next http.Handler) http.Handler {
 
 func generateNames(count int, seed string) ([]string, error) {
 	var allNames []string
-	namer, err := lib.NewNameifier()
+	namer, err := nameify.NewNameifier()
 	if err != nil {
 		return nil, err
 	}
