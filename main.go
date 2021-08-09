@@ -13,6 +13,7 @@ import (
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"github.com/relistan/apistuff"
+	"github.com/relistan/nameifier/nameify"
 	"gopkg.in/relistan/rubberneck.v1"
 )
 
@@ -20,7 +21,7 @@ var Config struct {
 	Port       int    `short:"p" help:"Port to start service on" default:"9001" env:"PORT"`
 	SeedString string `short:"s" help:"Seed string to use for naming" default:"" env:"SEED_STRING"`
 	Count      int    `short:"c" help:"Count of unique names to return" default:1 env:"COUNT"`
-	Cli	   bool   `help:"Run nameifier from the cli" default:false env:"CLI"`
+	Cli        bool   `help:"Run nameifier from the cli" default:false env:"CLI"`
 }
 
 //go:embed ui/index.html
@@ -64,7 +65,11 @@ func loggingMiddleware(next http.Handler) http.Handler {
 
 func generateNames(count int, seed string) ([]string, error) {
 	var allNames []string
-	namer := NewNameifier()
+	namer := nameify.NewNameifier()
+	err := namer.LoadJsonFiles()
+	if err != nil {
+		return nil, err
+	}
 	for i := 0; i < count; i++ {
 		name, err := namer.Nameify(fmt.Sprintf("%s-%d", seed, i))
 		if err != nil {
