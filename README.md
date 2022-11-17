@@ -8,7 +8,7 @@ data where a name is easier to remember than a number.
 You simply hit the endpoint and you will get text blob returned that contains
 the list of names. Samples follow
 
-This is available, publicly-hosted at: https://nameifier.apps.k.matthias.org
+This is available, publicly-hosted at: http://nameifier.apps.k.matthias.org
 
 ## URL Format
 
