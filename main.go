@@ -90,23 +90,24 @@ func main() {
 			fmt.Printf("Failed to nameify! %s", err)
 		}
 		fmt.Println(strings.Join(names, "\n"))
-	} else {
-		rubberneck.Print(Config)
-		serverRoot, err := fs.Sub(uiFS, "ui")
-		if err != nil {
-			println("Unable to read ui filesystem ", err.Error())
-			os.Exit(1)
-		}
-
-		uiFs := http.FileServer(http.FS(serverRoot))
-		router := mux.NewRouter()
-		router.Use(loggingMiddleware)
-		router.HandleFunc("/nameifier/{seed}/{count}", nameHandler).Methods("GET")
-		router.HandleFunc("/nameifier/{seed}", blankHandler).Methods("GET")
-		router.HandleFunc("/nameifier/", blankHandler).Methods("GET")
-		router.HandleFunc("/nameifier/", blankHandler).Methods("GET")
-		router.PathPrefix("/").Handler(uiFs)
-		http.Handle("/", router)
-		http.ListenAndServe(fmt.Sprintf("0.0.0.0:%d", Config.Port), nil)
+		os.Exit(0)
 	}
+
+	rubberneck.Print(Config)
+	serverRoot, err := fs.Sub(uiFS, "ui")
+	if err != nil {
+		println("Unable to read ui filesystem ", err.Error())
+		os.Exit(1)
+	}
+
+	uiFs := http.FileServer(http.FS(serverRoot))
+	router := mux.NewRouter()
+	router.Use(loggingMiddleware)
+	router.HandleFunc("/nameifier/{seed}/{count}", nameHandler).Methods("GET")
+	router.HandleFunc("/nameifier/{seed}", blankHandler).Methods("GET")
+	router.HandleFunc("/nameifier/", blankHandler).Methods("GET")
+	router.HandleFunc("/nameifier/", blankHandler).Methods("GET")
+	router.PathPrefix("/").Handler(uiFs)
+	http.Handle("/", router)
+	http.ListenAndServe(fmt.Sprintf("0.0.0.0:%d", Config.Port), nil)
 }
