@@ -15,9 +15,9 @@ require (
 	github.com/onsi/gomega v1.13.0 // indirect
 	github.com/relistan/apistuff v0.0.0-20181118170639-1d9adb6b55c1
 	github.com/relistan/rubberneck v1.2.1 // indirect
-	github.com/sirupsen/logrus v1.2.0
 	github.com/smartystreets/assertions v0.0.0-20180301161246-7678a5452ebe // indirect
 	github.com/smartystreets/goconvey v1.6.3
 	github.com/smartystreets/gunit v1.4.2 // indirect
+	golang.org/x/sys v0.0.0-20220715151400-c0bba94af5f8 // indirect
 	gopkg.in/relistan/rubberneck.v1 v1.1.0
 )
